@@ -103,8 +103,9 @@ class ClockInOutRepoImpl implements ClockInOutRepo {
 
       return Map<String, dynamic>.from(lastRecord);
     } on FirebaseException catch (e) {
-      print("Firebase Error: ${e.message}");
-      return null;
+      throw ClockInOutRepoException(msg: e.message ?? e.code);
+    } catch (e) {
+      throw ClockInOutRepoException(msg: e.toString());
     }
   }
 }

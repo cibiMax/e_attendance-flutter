@@ -5,7 +5,6 @@ import 'package:e_attendance/data/models/clock_in_out_model.dart';
 import 'package:e_attendance/data/widget_models/button_model.dart';
 import 'package:e_attendance/domain/services/clockinout/clockinout_exception.dart';
 import 'package:e_attendance/domain/services/clockinout/clockinout_service.dart';
-import 'package:e_attendance/presentation/features/user/history/clockin_history.dart';
 import 'package:e_attendance/presentation/features/user/home/location/location_controller.dart';
 import 'package:e_attendance/presentation/features/user/home/timer/timer_controller.dart';
 import 'package:e_attendance/presentation/widgets/alert_dialog.dart';

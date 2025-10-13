@@ -18,7 +18,7 @@ class AuthRepositoryImpl extends AuthRepository {
         case "wrong-password":
           throw AuthRepoException(msg: "The Password is incorrect");
         case "invalid-credential":
-          throw AuthRepoException(msg: "Incorrect Password");
+          throw AuthRepoException(msg: "Invalid Credentials");
         case "user-not-found":
           throw AuthRepoException(msg: "No user Found");
         case "user-disabled":

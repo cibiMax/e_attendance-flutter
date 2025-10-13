@@ -6,7 +6,6 @@ import 'package:e_attendance/presentation/features/auth/login/login.dart';
 import 'package:e_attendance/presentation/features/auth/signup/signup.dart';
 import 'package:e_attendance/presentation/features/user/history/clockin_history.dart';
 import 'package:e_attendance/presentation/features/user/home/user_home.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
 import '../../presentation/features/splash/splash.dart';

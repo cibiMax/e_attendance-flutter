@@ -1,4 +1,3 @@
-import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:e_attendance/core/utils/app_utils/connectivity_util.dart';
 import 'package:e_attendance/core/utils/app_utils/geolocation_service.dart';
 import 'package:e_attendance/core/utils/app_utils/local_util.dart';
@@ -21,7 +20,6 @@ import 'package:e_attendance/domain/services/user/user_service.dart';
 import 'package:e_attendance/domain/services/user/user_service_impl.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:get/get.dart';
 import 'package:get_it/get_it.dart';
 import 'package:location/location.dart';
 import 'package:shared_preferences/shared_preferences.dart';

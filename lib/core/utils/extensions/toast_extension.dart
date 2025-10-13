@@ -14,27 +14,9 @@ extension GetToastExtension on GetInterface {
     TextStyle? textStyle,
     IconData? icon,
   }) {
-    Color bgColor;
-    IconData displayIcon;
+   
 
-    switch (type) {
-      case ToastType.success:
-        bgColor = Colors.green;
-        displayIcon = Icons.check_circle;
-        break;
-      case ToastType.error:
-        bgColor = Colors.red;
-        displayIcon = Icons.error;
-        break;
-      case ToastType.warning:
-        bgColor = Colors.orange;
-        displayIcon = Icons.warning;
-        break;
-      case ToastType.info:
-      bgColor = Colors.blue;
-        displayIcon = Icons.info;
-        break;
-    }
+
 
   Fluttertoast.showToast(msg: message); }
 }

@@ -91,7 +91,7 @@ class LoginController extends GetxController with WidgetsBindingObserver {
         } else {
           Get.offNamed(Routes.home);
         }
-        ;
+        
       } on AuthServiceException catch (e) {
         Get.showToast(e.message, type: ToastType.error);
         Get.hideLoading();

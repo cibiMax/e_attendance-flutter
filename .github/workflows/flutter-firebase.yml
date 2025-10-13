@@ -1,0 +1,33 @@
+  name: Build and deploy
+  
+  on:
+    push:
+      branches:
+        - main
+  jobs:
+    Build_app:
+      runs-on: Ubuntu-latest
+      steps:
+      - name: Setup Flutter
+        # with:
+        #   flutter-version: 3.16.4
+        #   channel: stable
+        #   cache: true
+        uses: subosito/flutter-action@v2
+      - name: Checkout Branch
+        uses: actions/checkout@master
+      - name: Install Flutter Dependencies
+        run: flutter pub get
+      - name: Build APK (Release)
+        run: flutter build apk --release
+      - name: Install Firebase tools for windows
+        run: npm i -g firebase-tools
+      - name: Deploy to firebase app distribution
+        uses: wzieba/Firebase-Distribution-Github-Action@v1 
+        with:
+          appId: 1:629716381973:android:b89ab0b65a25cd1186f91c
+          serviceCredentialsFileContent: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+          groups: testers # The Firebase App Distribution group(s) to send the build to
+          file: build/app/outputs/flutter-apk/app-release.apk # Path to your built APK/IPA
+          releaseNotes: "New release from GitHub Actions" # Optional release notes
+            

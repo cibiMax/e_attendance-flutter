@@ -1,5 +1,3 @@
-import 'package:e_attendance/core/theme/app_colors.dart';
-import 'package:e_attendance/core/theme/app_text_styles.dart';
 import 'package:flutter/material.dart';
 
 class LoaderWidget extends StatelessWidget {
