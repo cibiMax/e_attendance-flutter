@@ -18,6 +18,14 @@
         uses: actions/checkout@master
       - name: Install Flutter Dependencies
         run: flutter pub get
+      - name: Setup google-services.json
+        run: |
+         mkdir -p android/app
+         echo '${{ secrets.GOOGLE_SERVICES_JSON }}' > android/app/google-services.json
+      - name: Generate firebase_options.dart
+        run: |
+          mkdir -p lib
+          echo "${{ secrets.FIREBASE_OPTIONS }}" > lib/firebase_options.dart
       - name: Build APK (Release)
         run: flutter build apk --release
       - name: Install Firebase tools for windows
@@ -25,7 +33,7 @@
       - name: Deploy to firebase app distribution
         uses: wzieba/Firebase-Distribution-Github-Action@v1 
         with:
-          appId: 1:629716381973:android:b89ab0b65a25cd1186f91c
+          appId: ${{ secrets.ANDROID_APP_ID }}
           serviceCredentialsFileContent: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
           groups: testers # The Firebase App Distribution group(s) to send the build to
           file: build/app/outputs/flutter-apk/app-release.apk # Path to your built APK/IPA
