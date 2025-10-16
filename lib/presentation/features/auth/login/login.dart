@@ -1,5 +1,6 @@
 import 'package:e_attendance/core/constants/image_constants.dart';
 import 'package:e_attendance/core/constants/string_constants.dart';
+import 'package:e_attendance/core/theme/app_dimensions.dart';
 import 'package:e_attendance/core/theme/app_icons.dart';
 import 'package:e_attendance/core/theme/app_text_styles.dart';
 import 'package:e_attendance/data/widget_models/button_model.dart';
@@ -23,7 +24,7 @@ class Login extends GetView<LoginController> {
     return Scaffold(
       body: Center(
         child: ResponsiveLayout(
-          child: SingleChildScrollView(
+          child: SingleChildScrollView(padding: AppDimensions.contentPadding,
             scrollDirection: Axis.vertical,
             child: Obx(
               () => Form(
@@ -65,12 +66,12 @@ class Login extends GetView<LoginController> {
                         onclick: controller.onLogin,
                       ),
                     ),
-                    // CustomElevatedButton(
-                    //   buttonModel: ButtonModel(
-                    //     title: StringConstants.signup,
-                    //     onclick: controller.onSignUp,
-                    //   ),
-                    // ),
+                    CustomElevatedButton(
+                      buttonModel: ButtonModel(
+                        title: StringConstants.signup,
+                        onclick: controller.onSignUp,
+                      ),
+                    ),
                   ],
                 ),
               ),

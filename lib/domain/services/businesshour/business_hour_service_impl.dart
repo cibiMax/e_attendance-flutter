@@ -14,24 +14,18 @@ class BusinessHourServiceImpl extends BusinessHourService {
 
     if (res.isEmpty) return [];
 
-    return res.map((map) {
-      final value = Map<String, dynamic>.from(map);
-      return BusinessHourModel.fromMap(value);
-    }).toList();
+    return res;
   }
 
   @override
   Future<void> saveBusinessHours(List<BusinessHourModel> businessHours) async {
-    final data = businessHours.map((e) => e.toMap()).toList();
-    await _businessHourRepo.saveBusinessHours(data);
+    await _businessHourRepo.saveBusinessHours(businessHours);
   }
 
   @override
   Future<BusinessHourModel?> getTodayBusinessHours() async {
     var res = await _businessHourRepo.getTodayBusinessHours();
-    if (res == {}) {
-      return null;
-    }
-    return BusinessHourModel.fromMap(res);
+
+    return res;
   }
 }

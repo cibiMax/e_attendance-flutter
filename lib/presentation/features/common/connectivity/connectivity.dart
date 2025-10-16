@@ -9,8 +9,7 @@ class ConnnectivityWidget extends GetView<ConnectivityController> {
   @override
   Widget build(BuildContext context) {
     
-    return Scaffold(
-      body: Column(
+    return  Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Obx(
@@ -24,7 +23,7 @@ class ConnnectivityWidget extends GetView<ConnectivityController> {
                 )),
           ),
         ],
-      ),
-    );
+      );
+    
   }
 }

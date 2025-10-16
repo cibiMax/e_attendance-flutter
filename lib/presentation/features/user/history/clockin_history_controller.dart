@@ -1,5 +1,5 @@
+import 'package:e_attendance/core/app_exceptions/app_exception.dart';
 import 'package:e_attendance/data/models/clock_in_out_model.dart';
-import 'package:e_attendance/domain/services/clockinout/clockinout_exception.dart';
 import 'package:e_attendance/domain/services/clockinout/clockinout_service.dart';
 import 'package:firebase_auth/firebase_auth.dart' show FirebaseAuth;
 import 'package:get/get.dart';
@@ -25,7 +25,7 @@ class ClockinHistoryController extends GetxController {
   void onInit() {
     final args = Get.arguments as Map<String, dynamic>?;
 
-    userID = args?['userKey'] ;
+    userID = args?['userKey'];
     fetchClockingHistory();
     super.onInit();
   }
@@ -38,8 +38,8 @@ class ClockinHistoryController extends GetxController {
       );
       list.value = res;
       isloading.value = false;
-    } on ClockinoutException catch (e) {
-      err.value = e.message;
+    } on AppException catch (e) {
+      err.value = e.msg;
     }
   }
 }

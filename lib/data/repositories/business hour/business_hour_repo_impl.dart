@@ -1,46 +1,20 @@
-import 'package:e_attendance/core/app_exceptions/app_exception.dart';
-import 'package:e_attendance/data/repositories/business%20hour/business_hour_repo.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:intl/intl.dart';
+import 'package:e_attendance/core/app_exceptions/app_exception.dart';
+import 'package:e_attendance/data/models/business_hour_model.dart';
+import 'package:intl/intl.dart' show DateFormat;
+import 'business_hour_repo.dart';
 
 class BusinessHourRepoImpl extends BusinessHourRepo {
-  final String path = "BusinessHours";
   final FirebaseDatabase _database;
+  final String path = "BusinessHours";
 
   BusinessHourRepoImpl({required FirebaseDatabase database})
     : _database = database;
 
   @override
-  Future<List<Map<String, dynamic>>> getBusinessHours() async {
+  Future<void> saveBusinessHours(List<BusinessHourModel> hours) async {
     try {
-      final snapshot = await _database.ref().child(path).get();
-
-      if (!snapshot.exists) return [];
-
-      final value = snapshot.value;
-
-      if (value is List) {
-        return value
-            .where((e) => e != null)
-            .map((e) => Map<String, dynamic>.from(e as Map))
-            .toList();
-      }
-
-      return [];
-    } catch (e) {
-      throw AppException.handle(e);
-    }
-  }
-
-  @override
-  Future<void> saveBusinessHours(List<Map<String, dynamic>> list) async {
-    try {
-      final data = list.asMap().map(
-        (index, item) => MapEntry(index.toString(), item),
-      );
-      var res= _database.ref().child(path).push();
-      
-
+      final data = {for (final item in hours) item.day: item.toMap()};
 
       await _database.ref().child(path).set(data);
     } catch (e) {
@@ -49,28 +23,37 @@ class BusinessHourRepoImpl extends BusinessHourRepo {
   }
 
   @override
-Future<Map<String, dynamic>> getTodayBusinessHours() async {
-  var today=DateFormat("EEEE").format(DateTime.now());
-  try {
-    final snapshot = await _database
-        .ref()
-        .child(path)
-        .orderByChild("day")
-        .equalTo(today)
-        .get();
+  Future<List<BusinessHourModel>> getBusinessHours() async {
+    try {
+      final snapshot = await _database.ref().child(path).get();
+      if (!snapshot.exists) return [];
 
-    if (!snapshot.exists) return {};
-
-    final value = snapshot.value;
-
-    if (value is Map) {
-      final firstEntry = value.values.first;
-      return Map<String, dynamic>.from(firstEntry as Map);
+      final data = Map<String, dynamic>.from(snapshot.value as Map);
+      return data.entries
+          .map(
+            (entry) => BusinessHourModel.fromMap(
+              Map<String, dynamic>.from(entry.value),
+            ),
+          )
+          .toList();
+    } catch (e) {
+      throw AppException.handle(e);
     }
-
-    return {};
-  } catch (e) {
-    throw AppException.handle(e);
   }
-}
+
+  @override
+  Future<BusinessHourModel?> getTodayBusinessHours() async {
+    try {
+      final today = DateTime.now();
+      final dayName = DateFormat('EEEE').format(today); 
+
+      final snapshot = await _database.ref().child('$path/$dayName').get();
+      if (!snapshot.exists) return null;
+
+      final map = Map<String, dynamic>.from(snapshot.value as Map);
+      return BusinessHourModel.fromMap(map);
+    } catch (e) {
+      throw AppException.handle(e);
+    }
+  }
 }

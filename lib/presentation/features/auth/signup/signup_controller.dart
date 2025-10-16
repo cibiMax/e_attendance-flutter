@@ -40,7 +40,7 @@ class SignupController extends GetxController {
                 AppUserModel(
                   role: roleController.text,
                   email: emailController.text,
-                  departmentKey: departmentController.text,
+                  department: departmentController.text,
                   userKey: usercred?.user?.uid,
                 ),
               )

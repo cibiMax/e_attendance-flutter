@@ -3,15 +3,20 @@ import 'package:e_attendance/domain/services/clockinout/clockinout_service.dart'
 import 'package:e_attendance/domain/services/user/user_service_exception.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 class ClockingListController extends GetxController {
   final ClockinoutService _clockinoutService;
+
   final RxBool isloading = false.obs;
   final RxList<ClockInOutModel> list = <ClockInOutModel>[].obs;
   final RxList<ClockInOutModel> filteredList = <ClockInOutModel>[].obs;
   final RxString err = "".obs;
+
   final RxString selectedDepartment = "".obs;
   final Rx<DateTimeRange?> selectedRange = Rx<DateTimeRange?>(null);
+  final RxString sortType = "".obs;
+
   final TextEditingController departmentController = TextEditingController();
 
   ClockingListController({required ClockinoutService clockinoutService})
@@ -23,56 +28,95 @@ class ClockingListController extends GetxController {
     super.onInit();
   }
 
-  void fetchAttendances() async {
+  Future<void> fetchAttendances() async {
     try {
       isloading.value = true;
-      var res = await _clockinoutService.getAllRecords();
+      err.value = "";
+      final res = await _clockinoutService.getAllRecords();
       list.value = res;
       filteredList.value = res;
-      isloading.value = false;
     } on UserServiceException catch (e) {
       err.value = e.message;
+    } finally {
+      isloading.value = false;
     }
   }
 
+  void applyFilters() {
+    List<ClockInOutModel> tempList = List.from(list);
+
+    ///dev-cibi filter by department
+    if (selectedDepartment.value.isNotEmpty) {
+      tempList = tempList
+          .where(
+            (e) =>
+                e.department?.toLowerCase() ==
+                selectedDepartment.value.toLowerCase(),
+          )
+          .toList();
+    }
+
+    // dev-cibi date range filter
+    if (selectedRange.value != null) {
+      tempList = tempList.where((record) {
+        if (record.date == null) return false;
+        final recordDate = DateFormat("dd/MM/yyyy").tryParse(record.date!);
+        if (recordDate == null) return false;
+        return recordDate.isAfter(
+              selectedRange.value!.start.subtract(const Duration(days: 1)),
+            ) &&
+            recordDate.isBefore(
+              selectedRange.value!.end.add(const Duration(days: 1)),
+            );
+      }).toList();
+    }
+
+    // email sorting to filter by Email ID
+    if (sortType.value == "email") {
+      tempList.sort((a, b) => (a.email ?? '').compareTo(b.email ?? ''));
+    }
+
+    filteredList.value = tempList;
+  }
+
+  ///filter by Department
+  void setDepartmentFilter() {
+    selectedDepartment.value = departmentController.text.trim();
+    applyFilters();
+  }
+
+  // email sorting to filter by Email ID
   void sortByEmail() {
-    filteredList.sort((a, b) => (a.email ?? '').compareTo(b.email ?? ''));
-    filteredList.refresh();
+    sortType.value = "email";
+    applyFilters();
   }
 
-  void sortByDate() {
-    filteredList.sort((a, b) {
-      final dateA = DateTime.tryParse(a.date ?? '') ?? DateTime(0);
-      final dateB = DateTime.tryParse(b.date ?? '') ?? DateTime(0);
-      return dateB.compareTo(dateA); // newest first
-    });
-    filteredList.refresh();
-  }
-
-  void filterByDepartment() {
-    selectedDepartment.value = departmentController.text;
-    filteredList.value = list
-        .where((e) => e.departmnet?.toLowerCase() == departmentController.text.toLowerCase())
-        .toList();
-  }
-
+  // email sorting to filter by Email
   Future<void> pickDateRange(BuildContext context) async {
     final range = await showDateRangePicker(
       context: context,
       firstDate: DateTime(2020),
       lastDate: DateTime.now(),
+      initialDateRange: selectedRange.value,
     );
+
     if (range != null) {
       selectedRange.value = range;
-      filteredList.value = list.where((record) {
-        if (record.date == null) return false;
-        final recordDate = DateTime.tryParse(record.date!);
-        if (recordDate == null) return false;
-        return recordDate.isAfter(
-              range.start.subtract(const Duration(days: 1)),
-            ) &&
-            recordDate.isBefore(range.end.add(const Duration(days: 1)));
-      }).toList();
+      applyFilters();
     }
   }
+
+  ///clear all filters
+  void clearFilters() {
+    selectedDepartment.value = "";
+    selectedRange.value = null;
+    sortType.value = "";
+    departmentController.clear();
+    filteredList.value = list;
+  }
+
+  bool get hasActiveFilters =>
+      selectedDepartment.value.isNotEmpty ||
+      selectedRange.value != null ||
+      sortType.value.isNotEmpty;
 }

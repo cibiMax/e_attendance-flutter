@@ -31,7 +31,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 var getIt = GetIt.instance;
 Future<void> setUpDependencies() async {
   final sharedPref = await SharedPreferences.getInstance();
-
   getIt.registerSingleton(FirebaseAuth.instance);
   getIt.registerSingleton<AuthRepository>(AuthRepositoryImpl());
   getIt.registerSingleton<AuthService>(

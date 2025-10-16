@@ -37,4 +37,6 @@ class StringConstants {
   static const String signup = "Sign Up";
   static const String signIn = "Back to Login";
   static const String sortByEmail = "Sort by Email";
+  static const String initialClkValue="--:--";
+
 }

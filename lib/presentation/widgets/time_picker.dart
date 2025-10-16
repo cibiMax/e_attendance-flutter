@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
 
 class TimePicker extends StatelessWidget {
-  const TimePicker({
-    super.key,
-  });
+  final TimeOfDay initialTime;
+  const TimePicker({super.key, required this.initialTime});
 
   @override
   Widget build(BuildContext context) {
-    return TimePickerDialog(initialTime: TimeOfDay(hour: 0, minute: 0));
+    return MediaQuery(
+      data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: false),
+      child: TimePickerDialog(
+        initialTime: initialTime,
+        initialEntryMode: TimePickerEntryMode.inputOnly,
+      ),
+    );
   }
 }

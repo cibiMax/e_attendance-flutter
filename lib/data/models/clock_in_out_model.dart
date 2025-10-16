@@ -1,6 +1,7 @@
 
 class ClockInOutModel {
   final String userKey;
+  final String? department;
   final String? duration;
   final String? date;
   final String? key;
@@ -8,11 +9,12 @@ class ClockInOutModel {
   final String? clockOutTime;
   final String? clockInLocation;
   final String? clockOutLocation;
-  final String? departmnet;
   final String? email;
+  final String? status;
+
   const ClockInOutModel({
     required this.userKey,
-    this.departmnet,
+    this.department,
     this.duration,
     this.date,
     this.key,
@@ -21,6 +23,7 @@ class ClockInOutModel {
     this.clockInLocation,
     this.clockOutLocation,
     this.email,
+    this.status,
   });
 
   Map<String, dynamic> toMap() {
@@ -33,33 +36,25 @@ class ClockInOutModel {
       'clockOutTime': clockOutTime,
       'clockInLocation': clockInLocation,
       'clockOutLocation': clockOutLocation,
-      'departmnetKey': departmnet,
+      'department': department,
       'email': email,
+      'status': status,
     };
   }
 
   factory ClockInOutModel.fromMap(Map<String, dynamic> map) {
     return ClockInOutModel(
       userKey: map['userKey'] as String,
-      duration: map['duration'] != null ? map['duration'] as String : null,
-      date: map['date'] != null ? map['date'] as String : null,
-      key: map['key'] != null ? map['key'] as String : null,
-      clockInTime: map['clockInTime'] != null
-          ? map['clockInTime'] as String
-          : null,
-      clockOutTime: map['clockOutTime'] != null
-          ? map['clockOutTime'] as String
-          : null,
-      clockInLocation: map['clockInLocation'] != null
-          ? map['clockInLocation'] as String
-          : null,
-      clockOutLocation: map['clockOutLocation'] != null
-          ? map['clockOutLocation'] as String
-          : null,
-      departmnet: map['departmentKey'] != null
-          ? map['departmentKey'] as String
-          : null,
-      email: map['email'] != null ? map['email'] as String : null,
+      duration: map['duration'] as String?,
+      date: map['date'] as String?,
+      key: map['key'] as String?,
+      clockInTime: map['clockInTime'] as String?,
+      clockOutTime: map['clockOutTime'] as String?,
+      clockInLocation: map['clockInLocation'] as String?,
+      clockOutLocation: map['clockOutLocation'] as String?,
+      department: map['department'] as String?,
+      email: map['email'] as String?,
+      status: map['status'] != null ? map['status'] as String : null,
     );
   }
 }

@@ -25,7 +25,7 @@ class AppIcons {
   static Widget pwdInvisible = _secondaryIconBase(Icons.visibility_off);
   static Widget departmentIcon = _secondaryIconBase(Icons.group);
   static Widget attendanceRecord = _secondaryIconBase(Icons.notes);
-  static Widget calendar = _secondaryIconBase(Icons.date_range);
+  static Widget calendar = _staticIconBase(Icons.date_range);
   static Widget refresh = _secondaryIconBase(Icons.refresh);
 
   static Widget elapsedTimeIcon = _staticIconBase(Icons.timelapse_rounded);
@@ -41,8 +41,12 @@ class AppIcons {
     Icons.power_settings_new,
     color: AppColors.primaryColor,
   );
+   static Widget staticBaseLogout = Icon(
+    Icons.logout,
+    color: AppColors.primaryColor,
+  );
   static Widget clockIn = Icon(Icons.login, color: AppColors.primaryColor);
-  static Widget history = _primaryIconBase(Icons.history);
+  static Widget history = _staticIconBase(Icons.history);
   static Widget filter = _primaryIconBase(Icons.filter_alt);
   static Widget hours=_staticIconBase(Icons.hourglass_bottom);
 }

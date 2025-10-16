@@ -1,12 +1,14 @@
+import 'package:e_attendance/core/constants/string_constants.dart';
 import 'package:e_attendance/core/theme/app_icons.dart';
+import 'package:e_attendance/data/widget_models/button_model.dart';
+import 'package:e_attendance/data/widget_models/textformfield_model.dart';
 import 'package:e_attendance/presentation/widgets/appbar.dart';
-import 'package:e_attendance/presentation/widgets/drawer.dart';
+import 'package:e_attendance/presentation/widgets/drawer/drawer.dart';
 import 'package:e_attendance/presentation/widgets/dropdown.dart';
+import 'package:e_attendance/presentation/widgets/elevatedbutton.dart';
 import 'package:e_attendance/presentation/widgets/responsive_layout.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../../../core/constants/string_constants.dart';
-import '../../../../data/widget_models/textformfield_model.dart';
 import 'clocking_controller.dart';
 
 class ClockingList extends GetView<ClockingListController> {
@@ -14,21 +16,20 @@ class ClockingList extends GetView<ClockingListController> {
 
   @override
   Widget build(BuildContext context) {
-    
     return Scaffold(
       resizeToAvoidBottomInset: false,
       drawer: AppDrawer(),
       appBar: CustomAppBar(title: "Attendance"),
 
       body: ResponsiveLayout(
-        child: Expanded(
+        child: Expanded(flex:1,
           child: Column(
             children: [
               Padding(
                 padding: const EdgeInsets.all(12.0),
                 child: CustomDropdown(
-                  onchange: (v) => controller.filterByDepartment(),
-                  items: ["SDE", "Development", "Accounts"],
+                  onchange: (v) => controller.setDepartmentFilter(),
+                  items: const ["SDE", "Development", "Accounts"],
                   textFormFieldModel: TextFormFieldModel(
                     controller: controller.departmentController,
                     prefixIcon: AppIcons.departmentIcon,
@@ -37,7 +38,6 @@ class ClockingList extends GetView<ClockingListController> {
                   ),
                 ),
               ),
-          
               Expanded(
                 child: Obx(() {
                   if (controller.isloading.value) {
@@ -68,7 +68,6 @@ class ClockingList extends GetView<ClockingListController> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              // Email
                               if (item.email != null)
                                 Text(
                                   item.email!,
@@ -77,22 +76,12 @@ class ClockingList extends GetView<ClockingListController> {
                                     fontSize: 16,
                                   ),
                                 ),
-                              
-          
                               const SizedBox(height: 6),
-          
-                              // Department
-                              if (item.departmnet != null)
-                                Text("Department: ${item.departmnet}"),
-          
+                              if (item.department != null)
+                                Text("Department: ${item.department}"),
                               const SizedBox(height: 4),
-          
-                              // Date
                               if (item.date != null) Text("Date: ${item.date}"),
-          
                               const SizedBox(height: 4),
-          
-                              // Clock In / Out
                               Row(
                                 children: [
                                   if (item.clockInTime != null)
@@ -102,19 +91,12 @@ class ClockingList extends GetView<ClockingListController> {
                                     Text("Out: ${item.clockOutTime}"),
                                 ],
                               ),
-          
                               const SizedBox(height: 4),
-          
-                              if (item.clockInLocation != null &&
-                                  item.clockInLocation!.isNotEmpty)
+                              if (item.clockInLocation?.isNotEmpty ?? false)
                                 Text("In Location: ${item.clockInLocation}"),
-                              if (item.clockOutLocation != null &&
-                                  item.clockOutLocation!.isNotEmpty)
+                              if (item.clockOutLocation?.isNotEmpty ?? false)
                                 Text("Out Location: ${item.clockOutLocation}"),
-          
                               const SizedBox(height: 4),
-          
-                              // Duration
                               if (item.duration != null)
                                 Text("Duration: ${item.duration}"),
                             ],
@@ -131,26 +113,45 @@ class ClockingList extends GetView<ClockingListController> {
       ),
 
       bottomNavigationBar: SafeArea(
-        child: Container(
-          padding: const EdgeInsets.all(12),
-          decoration: BoxDecoration(
-            color: Colors.grey.shade200,
-            border: const Border(top: BorderSide(color: Colors.grey)),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              ElevatedButton.icon(
-                icon: const Icon(Icons.sort),
-                label: const Text(StringConstants.sortByEmail),
-                onPressed: () => controller.sortByEmail(),
-              ),
-              ElevatedButton.icon(
-                icon: const Icon(Icons.calendar_month),
-                label: const Text("Date Range"),
-                onPressed: () => controller.pickDateRange(context),
-              ),
-            ],
+        child: Obx(
+          () => Container(
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: Colors.grey.shade200,
+              border: const Border(top: BorderSide(color: Colors.grey)),
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    CustomElevatedButton(
+                      buttonModel: ButtonModel(
+                        title: "Sort By Email",
+                        onclick: controller.sortByEmail,
+                      ),
+                    ),
+                    CustomElevatedButton(
+                      buttonModel: ButtonModel(
+                        title: "Sort by Date",
+                        onclick:()=> controller.pickDateRange(context),
+                      ),
+                    ),
+                  ],
+                ),
+                if (controller.hasActiveFilters)
+                  Padding(
+                    padding: const EdgeInsets.only(top: 8),
+                    child: CustomElevatedButton(
+                      buttonModel: ButtonModel(
+                        title: "Clear Filters",
+                        onclick: controller.clearFilters,
+                      ),
+                    ),
+                  ),
+              ],
+            ),
           ),
         ),
       ),

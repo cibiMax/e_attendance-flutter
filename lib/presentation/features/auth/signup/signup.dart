@@ -1,4 +1,5 @@
 import 'package:e_attendance/core/app_validations/validation_utils.dart';
+import 'package:e_attendance/core/theme/app_dimensions.dart';
 import 'package:e_attendance/presentation/features/auth/signup/signup_controller.dart';
 import 'package:e_attendance/presentation/widgets/dropdown.dart';
 import 'package:flutter/material.dart';
@@ -25,6 +26,7 @@ class SignUp extends GetView<SignupController> {
       body: Center(
         child: ResponsiveLayout(
           child: SingleChildScrollView(
+            padding: AppDimensions.contentPadding,
             scrollDirection: Axis.vertical,
             child: Obx(
               () => Form(

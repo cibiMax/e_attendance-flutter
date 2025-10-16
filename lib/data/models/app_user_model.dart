@@ -2,20 +2,20 @@ class AppUserModel {
   AppUserModel({
     required this.email,
     this.userKey,
-    this.departmentKey,
+    this.department,
     this.role,
   });
 
   final String email;
   final String? userKey;
-  final String? departmentKey;
+  final String? department;
   final String? role;
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'email': email,
       'userKey': userKey,
-      'departmentKey': departmentKey,
+      'department': department,
       'role': role,
     };
   }
@@ -24,7 +24,7 @@ class AppUserModel {
     return AppUserModel(
       email: map['email'] as String,
       userKey: map['userKey'] as String?,
-      departmentKey: map['departmentKey'] as String?,
+      department: map['department'] as String?,
       role: map['role'] as String?,
     );
   }

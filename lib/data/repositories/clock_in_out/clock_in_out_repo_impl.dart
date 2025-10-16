@@ -12,6 +12,7 @@ class ClockInOutRepoImpl implements ClockInOutRepo {
     try {
       var ref = db.ref(path).child(clockInOutModel["userKey"]).push();
 
+
       await ref.set({...clockInOutModel, "key": ref.key});
       return ref.key;
     } catch (e) {
@@ -38,7 +39,6 @@ class ClockInOutRepoImpl implements ClockInOutRepo {
     try {
       final res = await db.ref().child(path).child(userkey).get();
       if (res.exists) {
-        // Return raw data as list of maps
         final List<Map<String, dynamic>> users = res.children.map((child) {
           final data = Map<String, dynamic>.from(child.value as Map);
           return data;
@@ -69,7 +69,7 @@ class ClockInOutRepoImpl implements ClockInOutRepo {
               if (recordData is Map) {
                 final record = Map<String, dynamic>.from(recordData);
                 record['recordKey'] = recordKey;
-                record['userKey'] = userKey; // keep user key if needed
+                record['userKey'] = userKey; 
                 allRecords.add(record);
               }
             });
@@ -88,7 +88,6 @@ class ClockInOutRepoImpl implements ClockInOutRepo {
     try {
       final ref = db.ref().child(path).child(userKey);
 
-      // Query the last record
       final snapshot = await ref.orderByKey().limitToLast(1).get();
 
       if (!snapshot.exists) return null;

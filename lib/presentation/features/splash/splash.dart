@@ -11,56 +11,35 @@ class SplashScreen extends GetView<SplashController> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       body: Obx(
         () => Container(
           width: double.infinity,
           height: double.infinity,
           color: AppColors.accentColor,
-          child: Stack(
-            children: [
-              Positioned.fill(
-                child: Opacity(
-                  opacity: 0.1,
-                  child: CustomAssetImage(path: ImageConstants.loginCover),
+          child: Center(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                CustomAssetImage(path: ImageConstants.loginCover),
+                const SizedBox(height: 40),
+
+                CircularProgressIndicator(color: Colors.white, strokeWidth: 3),
+                const SizedBox(height: 20),
+
+                // Status text
+                Text(
+                  controller.isConnected.value
+                      ? "Checking user..."
+                      : "No internet connection",
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
-              ),
-
-              // Main content
-              Center(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                   
-                   CustomAssetImage(
-                     path:ImageConstants.loginCover,
-                     
-                    ),
-                    const SizedBox(height: 40),
-
-                    // Loading indicator
-                    CircularProgressIndicator(
-                      color: Colors.white,
-                      strokeWidth: 3,
-                    ),
-                    const SizedBox(height: 20),
-
-                    // Status text
-                    Text(
-                      controller.isConnected.value
-                          ? "Checking user..."
-                          : "No internet connection",
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
