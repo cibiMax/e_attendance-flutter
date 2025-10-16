@@ -22,10 +22,10 @@
         run: |
          mkdir -p android/app
          echo '${{ secrets.GOOGLE_SERVICES_JSON }}' > android/app/google-services.json
-      - name: Generate firebase_options.dart
-        run: |
-          mkdir -p lib
-          echo "${{ secrets.FIREBASE_OPTIONS }}" > lib/firebase_options.dart
+      # - name: Generate firebase_options.dart
+      #   run: |
+      #     mkdir -p lib
+      #     echo "${{ secrets.FIREBASE_OPTIONS }}" > lib/firebase_options.dart
       - name: Build APK (Release)
         run: flutter build apk --release
       - name: Install Firebase tools for windows
