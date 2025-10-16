@@ -18,10 +18,10 @@
         uses: actions/checkout@master
       - name: Install Flutter Dependencies
         run: flutter pub get
-      - name: Setup google-services.json
-        run: |
-         mkdir -p android/app
-         echo '${{ secrets.GOOGLE_SERVICES_JSON }}' > android/app/google-services.json
+      # - name: Setup google-services.json
+      #   run: |
+      #    mkdir -p android/app
+      #    echo '${{ secrets.GOOGLE_SERVICES_JSON }}' > android/app/google-services.json
       # - name: Generate firebase_options.dart
       #   run: |
       #     mkdir -p lib
