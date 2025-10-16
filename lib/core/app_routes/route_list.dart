@@ -1,5 +1,6 @@
 import 'package:e_attendance/core/app_routes/route_constants.dart' show Routes;
 import 'package:e_attendance/core/app_routes/routebindings.dart';
+import 'package:e_attendance/presentation/features/admin/business%20hours/businesshours.dart';
 import 'package:e_attendance/presentation/features/admin/clockinout/clocking_list.dart';
 import 'package:e_attendance/presentation/features/admin/user/user_list.dart';
 import 'package:e_attendance/presentation/features/auth/login/login.dart';
@@ -43,6 +44,11 @@ class AppPages {
       name: Routes.attendanceRecordList,
       page: () => ClockingList(),
       binding: ClockingListBindings(),
+    ),
+         GetPage(
+      name: Routes.businessHours,
+      page: () => BusinessHoursSettings(),
+      binding: BusinessHourSettingBinding(),
     ),
   ];
 }

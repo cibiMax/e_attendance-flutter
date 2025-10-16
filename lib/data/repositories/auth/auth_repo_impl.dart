@@ -1,5 +1,5 @@
+import 'package:e_attendance/core/app_exceptions/app_exception.dart';
 import 'package:e_attendance/data/repositories/auth/auth_repo.dart';
-import 'package:e_attendance/data/repositories/auth/auth_repo_exception.dart';
 import 'package:e_attendance/locator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -13,23 +13,8 @@ class AuthRepositoryImpl extends AuthRepository {
         password: password,
       );
       return res.user;
-    } on FirebaseAuthException catch (e) {
-      switch (e.code) {
-        case "wrong-password":
-          throw AuthRepoException(msg: "The Password is incorrect");
-        case "invalid-credential":
-          throw AuthRepoException(msg: "Invalid Credentials");
-        case "user-not-found":
-          throw AuthRepoException(msg: "No user Found");
-        case "user-disabled":
-          throw AuthRepoException(msg: "User disabled.Contact Admin");
-        case "weak-password":
-          throw AuthRepoException(msg: "Password Provided is too weak");
-        default:
-          throw AuthRepoException(msg: e.message ?? "");
-      }
     } catch (e) {
-      throw AuthRepoException(msg: "Unknown Error");
+      throw AppException.handle(e);
     }
   }
 
@@ -37,8 +22,8 @@ class AuthRepositoryImpl extends AuthRepository {
   Future<void> signOutUser() async {
     try {
       await _auth.signOut();
-    } on FirebaseAuthException catch (e) {
-      throw (AuthRepoException(msg: e.code));
+    } catch (e) {
+      throw AppException.handle(e);
     }
   }
 
@@ -50,8 +35,7 @@ class AuthRepositoryImpl extends AuthRepository {
         password: password,
       );
     } on FirebaseAuthException catch (e) {
-      throw (AuthRepoException(msg: e.code));
-    }
+    throw AppException.handle(e);    }
   }
 
   @override

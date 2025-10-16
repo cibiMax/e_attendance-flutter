@@ -1,7 +1,7 @@
 import 'package:e_attendance/data/repositories/user/user_repo.dart';
-import 'package:e_attendance/data/repositories/user/user_repo_exception.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
+
+import '../../../core/app_exceptions/app_exception.dart';
 
 class UserRepoImpl implements UserRepository {
   final FirebaseDatabase db;
@@ -23,8 +23,8 @@ class UserRepoImpl implements UserRepository {
       } else {
         return [];
       }
-    } on FirebaseException catch (e) {
-      throw UserRepoException(msg: e.code);
+    } catch (e) {
+      throw AppException.handle(e);
     }
   }
 
@@ -34,8 +34,8 @@ class UserRepoImpl implements UserRepository {
       final ref = db.ref().child(path).child(user["userKey"]);
       await ref.set({...user});
       return;
-    } on FirebaseException catch (e) {
-      throw UserRepoException(msg: e.code);
+    } catch (e) {
+      throw AppException.handle(e);
     }
   }
 
@@ -53,10 +53,8 @@ class UserRepoImpl implements UserRepository {
       } else {
         return null;
       }
-    } on FirebaseException catch (e) {
-      throw UserRepoException(msg: e.code);
     } catch (e) {
-      throw UserRepoException(msg: e.toString());
+      throw AppException.handle(e);
     }
   }
 
@@ -74,10 +72,8 @@ class UserRepoImpl implements UserRepository {
       } else {
         return "";
       }
-    } on FirebaseException catch (e) {
-      throw UserRepoException(msg: e.code);
     } catch (e) {
-      throw UserRepoException(msg: e.toString());
+      throw AppException.handle(e);
     }
   }
 }

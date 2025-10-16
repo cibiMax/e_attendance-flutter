@@ -13,6 +13,8 @@ class StringConstants {
   static const String resetPwd = "Reset Password";
   static const String users = "Users";
     static const String user = "Hi";
+    static const String bHours = "Today Business Hours";
+    
 
   static const String role = "Role";
 

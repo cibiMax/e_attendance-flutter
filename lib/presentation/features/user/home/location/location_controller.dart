@@ -16,6 +16,7 @@ class LocationController extends GetxController {
     : _locationUtil = locationUtil;
   @override
   void onInit() {
+  
     _locationSubscription = _locationUtil.onLocationChanged().listen((event) {
       fetchLocationFromLocationData(
         latitude: event.latitude,
@@ -27,7 +28,7 @@ class LocationController extends GetxController {
     super.onInit();
   }
 
-  fetchLocation() async {
+  void fetchLocation() async {
     try {
 
       bool res = await _locationUtil.checkLocationEnabled();

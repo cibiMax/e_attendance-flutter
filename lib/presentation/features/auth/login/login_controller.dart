@@ -1,7 +1,7 @@
+import 'package:e_attendance/core/app_exceptions/app_exception.dart';
 import 'package:e_attendance/core/utils/app_utils/permission_util.dart';
 import 'package:e_attendance/core/utils/extensions/toast_extension.dart';
 import 'package:e_attendance/domain/services/auth/auth_service.dart';
-import 'package:e_attendance/domain/services/auth/auth_service_exception.dart';
 import 'package:e_attendance/presentation/widgets/alert_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -92,8 +92,8 @@ class LoginController extends GetxController with WidgetsBindingObserver {
           Get.offNamed(Routes.home);
         }
         
-      } on AuthServiceException catch (e) {
-        Get.showToast(e.message, type: ToastType.error);
+      } on AppException catch (e) {
+        Get.showToast(e.msg, type: ToastType.error);
         Get.hideLoading();
       }
     } else {

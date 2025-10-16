@@ -10,28 +10,33 @@ import 'package:get/get.dart';
 import '../../core/app_routes/route_constants.dart';
 
 class AppDrawer extends StatelessWidget {
-  
   const AppDrawer({super.key});
 
   @override
   Widget build(BuildContext context) {
-     final List<MenuItem> menuItems = [
-    MenuItem(
-      title: "Users",
-      route: Routes.usersList,
-      icon: AppIcons.userAccount,
-    ),
-    MenuItem(
-      title: "Attendance",
-      route: Routes.attendanceRecordList,
-      icon: AppIcons.attendanceRecord,
-    ),
-     MenuItem(
-      title: "ClockIn/Out",
-      route: Routes.home,
-      icon: AppIcons.clockIcon,
-    ),
-  ];
+    final List<MenuItem> menuItems = [
+      MenuItem(
+        title: "Users",
+        route: Routes.usersList,
+        icon: AppIcons.userAccount,
+      ),
+      MenuItem(
+        title: "Attendance",
+        route: Routes.attendanceRecordList,
+        icon: AppIcons.attendanceRecord,
+      ),
+      MenuItem(
+        title: "ClockIn/Out",
+        route: Routes.home,
+        icon: AppIcons.clockIcon,
+      ),
+
+      MenuItem(
+        title: "Business Hours",
+        route: Routes.businessHours,
+        icon: AppIcons.hours,
+      ),
+    ];
 
     return Drawer(
       child: SizedBox(
@@ -73,7 +78,7 @@ class AppDrawer extends StatelessWidget {
                   itemBuilder: (context, index) => ListTile(
                     leading: menuItems[index].icon,
                     title: Text(menuItems[index].title),
-                    onTap: () => Get.offNamed(menuItems[index].route),
+                    onTap: () => Get.toNamed(menuItems[index].route),
                   ),
                 ),
               ),

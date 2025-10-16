@@ -1,8 +1,10 @@
 import 'package:e_attendance/core/utils/app_utils/permission_util.dart';
 import 'package:e_attendance/domain/services/auth/auth_service.dart';
+import 'package:e_attendance/domain/services/businesshour/business_hour_service.dart';
 import 'package:e_attendance/domain/services/clockinout/clockinout_service.dart';
 import 'package:e_attendance/domain/services/user/user_service.dart';
 import 'package:e_attendance/locator.dart';
+import 'package:e_attendance/presentation/features/admin/business%20hours/business_hour_settings_controller.dart';
 import 'package:e_attendance/presentation/features/admin/clockinout/clocking_controller.dart';
 import 'package:e_attendance/presentation/features/admin/user/user_list_controller.dart';
 import 'package:e_attendance/presentation/features/auth/login/login_controller.dart';
@@ -55,7 +57,7 @@ class UserHomeBinding extends Bindings {
     Get.lazyPut(() => TimerController());
 
     Get.lazyPut(
-      () => UserHomeController(
+      () => UserHomeController(businessHourService: getIt<BusinessHourService>(),
         auth: getIt<FirebaseAuth>(),
         clockinoutService: getIt<ClockinoutService>(),
         locationController: Get.find<LocationController>(),
@@ -90,6 +92,17 @@ class ClockingListBindings extends Bindings {
     Get.lazyPut(
       () =>
           ClockingListController(clockinoutService: getIt<ClockinoutService>()),
+    );
+  }
+}
+
+class BusinessHourSettingBinding extends Bindings {
+  @override
+  void dependencies() {
+    Get.lazyPut(
+      () => BusinessHoursSetingsController(
+        businessHourService: getIt<BusinessHourService>(),
+      ),
     );
   }
 }

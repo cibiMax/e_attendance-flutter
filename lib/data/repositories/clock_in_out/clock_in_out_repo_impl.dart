@@ -1,6 +1,5 @@
+import 'package:e_attendance/core/app_exceptions/app_exception.dart';
 import 'package:e_attendance/data/repositories/clock_in_out/clock_in_out_repo.dart';
-import 'package:e_attendance/data/repositories/clock_in_out/clock_in_out_repo_exception.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 
 class ClockInOutRepoImpl implements ClockInOutRepo {
@@ -15,8 +14,8 @@ class ClockInOutRepoImpl implements ClockInOutRepo {
 
       await ref.set({...clockInOutModel, "key": ref.key});
       return ref.key;
-    } on FirebaseException catch (e) {
-      throw (ClockInOutRepoException(msg: e.code));
+    } catch (e) {
+      throw AppException.handle(e);
     }
   }
 
@@ -29,8 +28,8 @@ class ClockInOutRepoImpl implements ClockInOutRepo {
       final ref = db.ref(path).child(userKey!).child(recordKey!);
 
       await ref.set({...clockInOutModel});
-    } on FirebaseException catch (e) {
-      throw ClockInOutRepoException(msg: e.code);
+    } catch (e) {
+      throw AppException.handle(e);
     }
   }
 
@@ -49,10 +48,8 @@ class ClockInOutRepoImpl implements ClockInOutRepo {
       } else {
         return [];
       }
-    } on FirebaseException catch (e) {
-      throw ClockInOutRepoException(msg: e.code);
     } catch (e) {
-      throw ClockInOutRepoException(msg: e.toString());
+      throw AppException.handle(e);
     }
   }
 
@@ -81,10 +78,8 @@ class ClockInOutRepoImpl implements ClockInOutRepo {
       }
 
       return allRecords;
-    } on FirebaseException catch (e) {
-      throw ClockInOutRepoException(msg: e.message ?? e.code);
     } catch (e) {
-      throw ClockInOutRepoException(msg: e.toString());
+      throw AppException.handle(e);
     }
   }
 
@@ -102,10 +97,8 @@ class ClockInOutRepoImpl implements ClockInOutRepo {
       final lastRecord = data.values.first as Map<dynamic, dynamic>;
 
       return Map<String, dynamic>.from(lastRecord);
-    } on FirebaseException catch (e) {
-      throw ClockInOutRepoException(msg: e.message ?? e.code);
     } catch (e) {
-      throw ClockInOutRepoException(msg: e.toString());
+      throw AppException.handle(e);
     }
   }
 }

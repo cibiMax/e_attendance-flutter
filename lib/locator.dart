@@ -4,6 +4,8 @@ import 'package:e_attendance/core/utils/app_utils/local_util.dart';
 import 'package:e_attendance/core/utils/app_utils/permission_util.dart';
 import 'package:e_attendance/data/repositories/auth/auth_repo.dart';
 import 'package:e_attendance/data/repositories/auth/auth_repo_impl.dart';
+import 'package:e_attendance/data/repositories/business%20hour/business_hour_repo.dart';
+import 'package:e_attendance/data/repositories/business%20hour/business_hour_repo_impl.dart';
 import 'package:e_attendance/data/repositories/clock_in_out/clock_in_out_repo.dart';
 import 'package:e_attendance/data/repositories/clock_in_out/clock_in_out_repo_impl.dart';
 import 'package:e_attendance/data/repositories/local/clock_in_out/clock_in_out.dart';
@@ -14,6 +16,8 @@ import 'package:e_attendance/data/repositories/user/user_repo.dart';
 import 'package:e_attendance/data/repositories/user/user_repo_impl.dart';
 import 'package:e_attendance/domain/services/auth/auth_service.dart';
 import 'package:e_attendance/domain/services/auth/auth_service_impl.dart';
+import 'package:e_attendance/domain/services/businesshour/business_hour_service.dart';
+import 'package:e_attendance/domain/services/businesshour/business_hour_service_impl.dart';
 import 'package:e_attendance/domain/services/clockinout/clockinout_impl.dart';
 import 'package:e_attendance/domain/services/clockinout/clockinout_service.dart';
 import 'package:e_attendance/domain/services/user/user_service.dart';
@@ -27,7 +31,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 var getIt = GetIt.instance;
 Future<void> setUpDependencies() async {
   final sharedPref = await SharedPreferences.getInstance();
-  
+
   getIt.registerSingleton(FirebaseAuth.instance);
   getIt.registerSingleton<AuthRepository>(AuthRepositoryImpl());
   getIt.registerSingleton<AuthService>(
@@ -59,13 +63,14 @@ Future<void> setUpDependencies() async {
   getIt.registerSingleton<UserLocal>(
     UserLocalImpl(localUtils: getIt<LocalUtils>()),
   );
-   getIt.registerSingleton<ClockInOutLocal>(
-    ClockInOutLocalImpl(localUtils:  getIt<LocalUtils>()),
+  getIt.registerSingleton<ClockInOutLocal>(
+    ClockInOutLocalImpl(localUtils: getIt<LocalUtils>()),
   );
   getIt.registerSingleton(ConnectivityUtil());
-
-
-
+  getIt.registerSingleton<BusinessHourRepo>(
+    BusinessHourRepoImpl(database: getIt<FirebaseDatabase>()),
+  );
+  getIt.registerSingleton<BusinessHourService>(
+    BusinessHourServiceImpl(businessHourRepo: getIt<BusinessHourRepo>()),
+  );
 }
-
-

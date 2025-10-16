@@ -16,7 +16,12 @@ class ConnnectivityWidget extends GetView<ConnectivityController> {
           Obx(
             () => controller.isconnected.value
                 ? child
-                : Center(child: Text("Check your Internet connection..")),
+                : Center(child: Column(
+                  children: [
+                    Icon(Icons.network_check),
+                    Text("Check your Internet connection.."),
+                  ],
+                )),
           ),
         ],
       ),

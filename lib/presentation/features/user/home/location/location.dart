@@ -14,20 +14,23 @@ class LocationTile extends GetView<LocationController> {
     return Card(
       child: ListTile(
         leading: AppIcons.locationIcon,
-        // trailing:
-        title: Row(mainAxisSize: MainAxisSize.min,
-          children: [ 
-            Text(StringConstants.location, style: AppTextStyles.subheading),
-            TextButton(
-          onPressed: () => controller.fetchLocation(),
-          child: Text("Refresh"),
-        ),
+        trailing:IconButton(onPressed: controller.fetchLocation, icon: AppIcons.refresh),
+        title: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              style: AppTextStyles.subheading,
+              StringConstants.location,
+            ),
           ],
         ),
         subtitle: Obx(
           () => controller.isloading.value
-              ? Text("", style: AppTextStyles.italicHint)
-              : Text(controller.location.value,style: AppTextStyles.italicHint),
+              ? Center(child: CircularProgressIndicator())
+              : Text(
+                  controller.location.value,
+                  style: AppTextStyles.italicHint,
+                ),
         ),
       ),
     );

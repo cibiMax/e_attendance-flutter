@@ -1,7 +1,7 @@
+import 'package:e_attendance/core/app_exceptions/app_exception.dart';
 import 'package:e_attendance/core/utils/extensions/loader_extension.dart';
 import 'package:e_attendance/core/utils/extensions/toast_extension.dart';
 import 'package:e_attendance/data/models/app_user_model.dart';
-import 'package:e_attendance/domain/services/auth/auth_service_exception.dart';
 import 'package:e_attendance/domain/services/user/user_service.dart';
 import 'package:e_attendance/domain/services/user/user_service_exception.dart';
 import 'package:flutter/material.dart';
@@ -54,9 +54,9 @@ class SignupController extends GetxController {
       }
 
       ///Edge Case need to be handled on user creation in server side
-    } on AuthServiceException catch (e) {
+    } on AppException catch (e) {
       Get.hideLoading();
-      Get.showToast(e.message);
+      Get.showToast(e.msg);
     } on UserServiceException catch (e) {
       await _authService.currentUser()?.delete();
       Get.hideLoading();

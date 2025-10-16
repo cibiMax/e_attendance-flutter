@@ -4,7 +4,7 @@ class Routes {
   static const signup = '/signup';
   static const home = '/home';
   static const clockingHistory = '/clkingHistory';
-    static const usersList = '/usersList';
-    static const attendanceRecordList="/attendanceRecords";
-
+  static const usersList = '/usersList';
+  static const attendanceRecordList = "/attendanceRecords";
+  static const businessHours = "/businessHours";
 }

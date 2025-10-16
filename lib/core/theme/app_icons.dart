@@ -25,12 +25,13 @@ class AppIcons {
   static Widget pwdInvisible = _secondaryIconBase(Icons.visibility_off);
   static Widget departmentIcon = _secondaryIconBase(Icons.group);
   static Widget attendanceRecord = _secondaryIconBase(Icons.notes);
-    static Widget calendar = _secondaryIconBase(Icons.date_range);
+  static Widget calendar = _secondaryIconBase(Icons.date_range);
+  static Widget refresh = _secondaryIconBase(Icons.refresh);
 
-    static Widget elapsedTimeIcon = _staticIconBase(Icons.timelapse_rounded);
+  static Widget elapsedTimeIcon = _staticIconBase(Icons.timelapse_rounded);
 
   static Widget userAccount = _secondaryIconBase(Icons.account_circle);
-    static Widget userListTile = _staticIconBase(Icons.account_circle);
+  static Widget userListTile = _staticIconBase(Icons.account_circle);
 
   static Widget clockIcon = _staticIconBase(Icons.timer_outlined);
 
@@ -40,11 +41,8 @@ class AppIcons {
     Icons.power_settings_new,
     color: AppColors.primaryColor,
   );
-  static Widget clockIn = Icon(
-    Icons.login,
-    color: AppColors.primaryColor,
-  );
+  static Widget clockIn = Icon(Icons.login, color: AppColors.primaryColor);
   static Widget history = _primaryIconBase(Icons.history);
-    static Widget filter = _primaryIconBase(Icons.filter_alt);
-
+  static Widget filter = _primaryIconBase(Icons.filter_alt);
+  static Widget hours=_staticIconBase(Icons.hourglass_bottom);
 }
