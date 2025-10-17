@@ -11,64 +11,80 @@ import 'drawer.dart';
 
 class AppDrawerController extends GetxController {
   final FirebaseAuth _auth;
-  late final List<MenuItem> menuItems;
+  RxList<MenuItem> menuItems = <MenuItem>[].obs;
+  RxBool isloading = false.obs;
   AppDrawerController({required FirebaseAuth auth}) : _auth = auth;
 
   @override
   void onInit() {
-    WidgetsBinding.instance.addPostFrameCallback((time) async {
-      var isAdmin = await _auth.currentUser?.email?.contains("admin") ?? false;
-      menuItems = isAdmin
-          ? [
-              MenuItem(
-                title: "Users",
-                route: Routes.usersList,
-                icon: AppIcons.userListTile,
-              ),
-              MenuItem(
-                title: "Attendance",
-                route: Routes.attendanceRecordList,
-                icon: AppIcons.calendar,
-              ),
-              MenuItem(
-                title: "ClockIn/Out",
-                route: Routes.home,
-                icon: AppIcons.clockIcon,
-              ),
-
-              MenuItem(
-                title: "Business Hours",
-                route: Routes.businessHours,
-                icon: AppIcons.hours,
-              ),
-              MenuItem(
-                route: Routes.login,
-                title: "Log Out",
-                icon: AppIcons.staticBaseLogout,
-                onClick: logout,
-              ),
-            ]
-          : [
-              MenuItem(
-                title: "ClockIn/Out",
-                route: Routes.home,
-                icon: AppIcons.clockIcon,
-              ),
-              MenuItem(
-                title: "History",
-                route: Routes.clockingHistory,
-                icon: AppIcons.history,
-              ),
-              MenuItem(
-                route: Routes.login,
-                title: "Log Out",
-                icon: AppIcons.staticBaseLogout,
-                onClick: ()=> logout(),
-              ),
-            ];
-    });
+   
+       getMenuItems();
+   
 
     super.onInit();
+  }
+
+  
+  @override
+  void dispose() {
+   
+      Get.find<AppDrawerController>().dispose();
+
+    super.dispose();
+  }
+
+  Future<void> getMenuItems() async {
+    isloading.value = true;
+    var isAdmin = await _auth.currentUser?.email?.contains("admin") ?? false;
+    menuItems.value = isAdmin
+        ? [
+            MenuItem(
+              title: "Users",
+              route: Routes.usersList,
+              icon: AppIcons.userListTile,
+            ),
+            MenuItem(
+              title: "Attendance",
+              route: Routes.attendanceRecordList,
+              icon: AppIcons.calendar,
+            ),
+            MenuItem(
+              title: "ClockIn/Out",
+              route: Routes.home,
+              icon: AppIcons.clockIcon,
+            ),
+
+            MenuItem(
+              title: "Business Hours",
+              route: Routes.businessHours,
+              icon: AppIcons.hours,
+            ),
+            MenuItem(
+              route: Routes.login,
+              title: "Log Out",
+              icon: AppIcons.staticBaseLogout,
+              onClick: logout,
+            ),
+          ]
+        : [
+            MenuItem(
+              title: "ClockIn/Out",
+              route: Routes.home,
+              icon: AppIcons.clockIcon,
+            ),
+            MenuItem(
+              title: "History",
+              route: Routes.clockingHistory,
+              icon: AppIcons.history,
+            ),
+            MenuItem(
+              route: Routes.login,
+              title: "Log Out",
+              icon: AppIcons.staticBaseLogout,
+              onClick: () => logout(),
+            ),
+          ];
+    isloading.value = false;
   }
 
   void logout() async {

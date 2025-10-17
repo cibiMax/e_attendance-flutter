@@ -9,13 +9,13 @@ import 'package:e_attendance/core/theme/app_icons.dart';
 import 'package:e_attendance/core/theme/app_text_styles.dart';
 import 'package:get/get.dart';
 
-import '../../../core/app_routes/route_constants.dart';
 
-class AppDrawer extends GetView<AppDrawerController> {
+class AppDrawer extends StatelessWidget {
   const AppDrawer({super.key});
 
   @override
   Widget build(BuildContext context) {
+    var controller=Get.put<AppDrawerController>(AppDrawerController(auth: getIt<FirebaseAuth>()));
     return Drawer(
       child: SizedBox(
         width: MediaQuery.of(context).size.width * 0.3,
@@ -50,20 +50,24 @@ class AppDrawer extends GetView<AppDrawerController> {
                   ),
                 ),
               ),
-              Expanded(
-                child: ListView.builder(
-                  itemCount: controller.menuItems.length,
-                  itemBuilder: (context, index) => ListTile(
-                    leading: controller.menuItems[index].icon,
-                    title: Text(controller.menuItems[index].title),
-                    onTap: () {
-                      if (controller.menuItems[index].onClick != null)
-                        controller.menuItems[index].onClick!();
-                      else
-                        Get.offNamed(controller.menuItems[index].route);
-                    },
-                  ),
-                ),
+              Obx(
+                () => controller.isloading.value
+                    ? Center(child: CircularProgressIndicator())
+                    : Expanded(
+                        child: ListView.builder(
+                          itemCount: controller.menuItems.length,
+                          itemBuilder: (context, index) => ListTile(
+                            leading: controller.menuItems[index].icon,
+                            title: Text(controller.menuItems[index].title),
+                            onTap: () {
+                              if (controller.menuItems[index].onClick != null)
+                                controller.menuItems[index].onClick!();
+                              else
+                                Get.offNamed(controller.menuItems[index].route);
+                            },
+                          ),
+                        ),
+                      ),
               ),
             ],
           ),

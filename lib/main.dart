@@ -22,7 +22,6 @@ Future<void> main() async {
     Get.put(
       ConnectivityController(connectivityUtil: getIt<ConnectivityUtil>()),
     );
-    Get.put(AppDrawerController(auth: getIt<FirebaseAuth>()));
     if (res) runApp(MyApp());
   });
 }
