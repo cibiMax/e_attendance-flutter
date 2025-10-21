@@ -2,25 +2,33 @@ import 'dart:async';
 
 import 'package:geocoding/geocoding.dart';
 import 'package:location/location.dart' as a;
+import 'package:geolocator/geolocator.dart' as b;
 
 class LocationUtil {
-  final a.Location location;
+  final a.Location _location;
 
-  LocationUtil({required this.location});
+  LocationUtil({required a.Location location}) : _location = location;
+
   Future<bool> checkLocationEnabled() async {
-    return await location.serviceEnabled();
+    return await _location.serviceEnabled();
   }
 
   Future<bool> requestLocationService() async {
-    return await location.requestService();
+    return await _location.requestService();
   }
 
-  Future<a.LocationData> getPosition() async {
-    return await location.getLocation();
+  Future<b.Position> getPosition() async {
+    return await b.Geolocator.getCurrentPosition(
+      locationSettings: b.LocationSettings(
+        accuracy: b.LocationAccuracy.best,
+        distanceFilter: 1,
+        timeLimit: Duration(seconds: 30),
+      ),
+    );
   }
 
   Stream<a.LocationData> onLocationChanged() {
-    return location.onLocationChanged;
+    return _location.onLocationChanged;
   }
 
   Future<List<Placemark>> getAddressFromPosition(
